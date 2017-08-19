@@ -36,6 +36,9 @@ action :install do
     response_file 'slapd.seed' if node['platform_family'] == 'debian'
     action new_resource.package_action
   end
+  package client_package do
+    action new_resource.package_action
+  end
 end
 
 action_class do
