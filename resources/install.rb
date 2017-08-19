@@ -62,4 +62,17 @@ action_class do
       'libdbi'
     end
   end
+
+  def client_package
+    case node['platform_family']
+    when 'debian'
+      'ldap-utils'
+    when 'rhel', 'fedora'
+      'openldap-clients'
+    when 'freebsd'
+      'openldap-client'
+    when 'suse'
+      'openldap2-client'
+    end
+  end
 end
