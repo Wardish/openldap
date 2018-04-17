@@ -36,6 +36,9 @@ action :install do
     response_file 'slapd.seed' if node['platform_family'] == 'debian'
     action new_resource.package_action
   end
+  package client_package do
+    action new_resource.package_action
+  end
 end
 
 action_class do
@@ -60,6 +63,19 @@ action_class do
       node['platform_version'].to_i >= 7 && !platform?('amazon') ? 'compat-db47' : 'db4-utils'
     when 'freebsd'
       'libdbi'
+    end
+  end
+
+  def client_package
+    case node['platform_family']
+    when 'debian'
+      'ldap-utils'
+    when 'rhel', 'fedora'
+      'openldap-clients'
+    when 'freebsd'
+      'openldap-client'
+    when 'suse'
+      'openldap2-client'
     end
   end
 end
